@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Lyrics</title>
+</head>
+<body>
+    <div class="container">
+        <h1 class="display-4 mb-4"></h1>
+        <div class="d-flex">
+          
+        <hr>
+        
+        
+        <form>
+            <div class="artist">
+                <input type="text" id="artist" class="form-control" placeholder="Artist">
+            </div>
+            <div class="song">
+                <input type="text" id="song" class="form-control" placeholder="Song">
+            </div>
+            <input type="submit" id="getLyric" value="Get Lyrics"> <br>
+            <input type="submit" id="advice" value="Random Quote by Kayne West">
+            <h2 class="Lyrics"></h2>
+            <div id="output">
+          
+          
+          
+        </div>
+        <div id="Advice">
+            
+            
+        </div>
+
+            <h3 class="Advice">
+                
+            </h3>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('getLyric').addEventListener('click',getLyrics);
+        function getLyrics(e) {
+            e.preventDefault();
+
+            let artist = document.getElementById('artist').value;
+            let song = document.getElementById('song').value;
+
+            fetch('https://api.lyrics.ovh/v1/' + artist + '/' + song, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json, text/plain, */*',
+                    'Content-type': 'application/json'
+                },
+                
+            })
+                .then((res) => res.json())
+                .then((data) => {
+						let output = '<h2 class="lyrics">Lyrics</h2>';
+					   
+							output += `
+					<div class="post lyrics">
+					  <h3>${data.lyrics}</h3>
+					</div>
+				  `;
+					   
+						document.getElementById('output').innerHTML = output;
+					})
+                
+        }
+        
+        
+        document.getElementById('advice').addEventListener('click',getAdvice);
+        function getAdvice(e) {
+            e.preventDefault();
+
+            fetch('https://api.kanye.rest/', {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json, text/plain, */*',
+                    'Content-type': 'application/json'
+                },
+                
+            })
+                .then((res) => res.json())
+                .then((data) => {
+						let output = '<h3 class="Advice">Kayne West Random Quote</h3>';
+					   
+							output += `
+					<div class="Advice">
+					  <h3>${data.quote}</h3>
+					</div>
+				  `;
+					   
+						document.getElementById('Advice').innerHTML = output;
+					})
+                
+        }
+ 
+
+        
+    </script>
+</body>
+</html>
